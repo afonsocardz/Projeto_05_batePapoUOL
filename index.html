@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,25 +9,40 @@
     <link rel="stylesheet" href="./assets/css/reset.css">
     <link rel="stylesheet" href="./assets/css/styles.css">
 </head>
+
 <body>
 
     <div class="container">
+        <div class="login-container">
+            <div class="login-panel">
+                <img src="./assets/imgs/logo.png" alt="">
+                <div class="login">
+                    <input type="text" name="user">
+                    <div class="login-button" onclick="loginUser()">
+                        <ion-icon name="heart"></ion-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="hamburguer-menu">
-            <div class="top">
-                <span></span>
+            <div class="option-section">
+                <span>Escolha um contato para enviar mensagem:</span>
             </div>
             <ul class="users">
-                <li>
-                    <img src="" alt="Icon">
-                    <span></span>
-                    <img class="selected" src="" alt="">
+                <li onclick="sendTo()">
+                    <ion-icon name="heart"></ion-icon>
+                    <span>Todos</span>
+                    <ion-icon name="heart"></ion-icon>
                 </li>
             </ul>
+            <div class="option-section">
+                <span>Escolha a visibilidade:</span>
+            </div>
             <ul class="visibility">
                 <li>
-                    <img src="" alt="icon">
-                    <span></span>
-                    <img class="selected" src="" alt="">
+                    <ion-icon name="heart"></ion-icon>
+                    <span>Público</span>
+                    <ion-icon name="heart"></ion-icon>
                 </li>
             </ul>
         </div>
@@ -35,7 +51,6 @@
                 <img src="" alt="Logo">
                 <ion-icon name="heart"></ion-icon>
             </div>
-            
         </header>
         <div class="chat-container">
             <ul>
@@ -47,15 +62,19 @@
             </ul>
         </div>
         <div class="text-container">
-            <input type="text">
-            <ion-icon name="heart"></ion-icon>
+            <input type="text" name="message">
+            <div class="send-button" onclick="messageHandler(true)">
+                <ion-icon name="heart"></ion-icon>
+            </div>
+
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <script src="./assets/js/domUtils.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <!--<script type="module" src="./assets/js/domUtils.js"></script>-->
     <script src="./assets/js/script.js"></script>
 </body>
+
 </html>

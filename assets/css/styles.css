@@ -1,16 +1,55 @@
-
-.hamburguer-menu{
-    width: 0px;
-    visibility: hidden;
-}
-
 .container{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
+    height: 100vh;
+    position: relative;
+
 }
+
+.hamburguer-menu{
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    position: absolute;
+    top:0;
+    right: 0px;
+    transform: translateX();
+}
+
+.login-container{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    background-color: rgba(255,255,255,0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.login-container.hidden{
+    opacity: 0;
+    height: 0;
+}
+
+.login-panel{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login {
+    display: flex;
+    align-items: center;
+}
+
+
 
 header{
     display: flex;
