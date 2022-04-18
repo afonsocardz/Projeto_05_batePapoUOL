@@ -21,29 +21,25 @@ function createElement(type, options = {}) {
 
 let lastMessages = false;
 
+let idOnline;
+let idMessages;
+
 const isOnline = (url, user) => axios.post(url, user).then().catch();
 
-const chatSignIn = (url, user) => axios.post(url, user)
-    .then(response => {
-        loggedUser.name = user.name
-        console.log(response);
-    })
-    .catch();
+const chatSignIn = (url, user) => axios.post(url, user);
+    
 
 const searchMessages = (url) => axios.get(url);
 
 const newMessages = (message) => {
-    lastMessages.forEach(lastMsg => {
-        console.log(lastMsg);
-        if(message !== lastMsg){
-            return message;
-        }
-    });
-};
+    console.log(message);
+
+    if (!lastMessages.includes(message)) {
+        return message;
+    };
+}
 
 const privacyMsg = (message) => (message.to === loggedUser.name || message.to === "Todos");
-    
-
 
 const msgType = (message) => {
     let type;
@@ -84,18 +80,13 @@ const printMessages = (response) => {
     let messages = response.data.map(message => message);
     private = messages.filter(privacyMsg);
     let styledMsgs = private.map(msgType);
-    if (!lastMessages){
-        styledMsgs.forEach(message => {
-            messageList.innerHTML += message;
-        })
-        lastMessages = private.map((message)=>message);
-        return;
-    }
-    lastMessages = private.filter(newMessages);
-    styledMsgs = lastMessages.map(msgType);
-    styledMsgs.forEach(msg => {
-        messageList.innerHTML += msg;
-    });
+    messageList.innerHTML = "";
+    styledMsgs.forEach(message => {
+        messageList.innerHTML += message;
+    })
+    const ultima = qs('.chat-container ul li:last-child');
+    ultima.scrollIntoView({block: "end", behavior: "smooth"});
+    lastMessages = private.map((message) => message);
 };
 
 const getMessage = () => {
@@ -107,7 +98,8 @@ const sendMessage = (url, message) => axios.post(url, message);
 
 function setLogin(user) {
     const userAPI = "https://mock-api.driven.com.br/api/v6/uol/participants";
-    chatSignIn(userAPI, user);
+    const response = chatSignIn(userAPI, user);
+    return response;
 }
 
 function loginUser() {
@@ -116,10 +108,17 @@ function loginUser() {
     const user = {
         name: userName
     }
-    setLogin(user);
-    loginContainer.classList.add('hidden');
-    setInterval(checkOnline, 4000);
-    setInterval(getMessage, 2000);
+    const response = setLogin(user);
+    response.then(response => {
+        loggedUser.name = user.name
+        console.log(response);
+        loginContainer.classList.add('hidden');
+        idOnline = setInterval(checkOnline, 4000);
+        idMessages = setInterval(getMessage, 2000);
+    })
+    response.catch(()=>alert("Usuário já existe, por favor digite outro nome!"));
+    
+    
 }
 
 function checkOnline() {
@@ -132,6 +131,15 @@ function sendTo(ele) {
     const option = qs('span', ele).textContent;
     console.log(option)
     receiver.name = option;
+}
+
+function sentFailure(){
+    clearInterval(idMessages);
+    clearInterval(idOnline);
+    const loginContainer = qs('.login-container');
+    loginContainer.classList.remove('hidden');
+    alert("Você foi desconectado, entre novamente!");
+
 }
 
 function sentSuccesful(ele) {
@@ -154,6 +162,7 @@ function messageHandler(isSending) {
         const sendingEle = qs('.send-message-container span');
         sendingEle.classList.add('active');
         promise.then(sentSuccesful(sendingEle));
+        promise.catch(sentFailure);
         setTimeout(() => sendingEle.classList.remove('active'), 4000)
         return
     }
