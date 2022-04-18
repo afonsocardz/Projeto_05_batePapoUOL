@@ -19,6 +19,8 @@ function createElement(type, options = {}) {
     return element;
 }
 
+let lastMessages = false;
+
 const isOnline = (url, user) => axios.post(url, user).then().catch();
 
 const chatSignIn = (url, user) => axios.post(url, user)
@@ -30,36 +32,70 @@ const chatSignIn = (url, user) => axios.post(url, user)
 
 const searchMessages = (url) => axios.get(url);
 
-const newMessages = (message) => message;
+const newMessages = (message) => {
+    lastMessages.forEach(lastMsg => {
+        console.log(lastMsg);
+        if(message !== lastMsg){
+            return message;
+        }
+    });
+};
+
+const privacyMsg = (message) => (message.to === loggedUser.name || message.to === "Todos");
+    
 
 
+const msgType = (message) => {
+    let type;
+    if (message.type === "status") {
+        type = "status";
+        const msg = `
+        <li class="${type}">
+            <div class="message-container">
+                <span class="time">${message.time}</span>
+                <span class="to-from"><strong>${message.from}</strong></span>
+                <span>${message.text}</span>
+            </div>
+        </li>
+        `
+        return msg;
+    }
+    if (message.type === "private_message") {
+        type = "private";
+    }
+    if (message.type === "message") {
+        type = "normal";
+    }
+    const msg = `
+        <li class="${type}">
+            <div class="message-container">
+                <span class="time">${message.time}</span>
+                <span class="to-from">De <strong>${message.from}</strong> para <strong>${message.to}</strong>:</span>
+                <span>${message.text}</span>
+            </div>
+        </li>
+        `
+    return msg;
+}
 
 const printMessages = (response) => {
-    let msgType;
+    let private;
     const messageList = qs('.chat-container ul');
-    messageList.innerHTML = "";
-    const messages = response.data.map(newMessages)
-    console.log(response);
-    messages.forEach(message => {
-        switch (message.status) {
-            case "status":
-                msgType = "status";
-            case "private_message":
-                msgType = "private";
-            default:
-                msgType = "normal";
-        }
-        const msg = `
-            <li class="${msgType}">
-                <div class="message-container">
-                    <span class="time">${message.time}</span>
-                    <span class="to-from">De <strong>${message.from}</strong> para <strong>${message.to}</strong>:</span>
-                    <span>${message.text}</span>
-                </div>
-            </li>
-            `
+    let messages = response.data.map(message => message);
+    private = messages.filter(privacyMsg);
+    let styledMsgs = private.map(msgType);
+    if (!lastMessages){
+        styledMsgs.forEach(message => {
+            messageList.innerHTML += message;
+        })
+        lastMessages = private.map((message)=>message);
+        return;
+    }
+    lastMessages = private.filter(newMessages);
+    styledMsgs = lastMessages.map(msgType);
+    styledMsgs.forEach(msg => {
         messageList.innerHTML += msg;
-    })
+    });
 };
 
 const getMessage = () => {
@@ -83,7 +119,7 @@ function loginUser() {
     setLogin(user);
     loginContainer.classList.add('hidden');
     setInterval(checkOnline, 4000);
-    setInterval(getMessage, 1000);
+    setInterval(getMessage, 2000);
 }
 
 function checkOnline() {
