@@ -27,7 +27,6 @@ let idMessages;
 const isOnline = (url, user) => axios.post(url, user).then().catch();
 
 const chatSignIn = (url, user) => axios.post(url, user);
-    
 
 const searchMessages = (url) => axios.get(url);
 
@@ -65,7 +64,7 @@ const msgType = (message) => {
     const msg = `
         <li class="${type}">
             <div class="message-container">
-                <span class="time">${message.time}</span>
+                <span class="time">(${message.time})</span>
                 <span class="to-from">De <strong>${message.from}</strong> para <strong>${message.to}</strong>:</span>
                 <span>${message.text}</span>
             </div>
@@ -149,13 +148,13 @@ function sentSuccesful(ele) {
 function messageHandler(isSending) {
     const messageAPI = "https://mock-api.driven.com.br/api/v6/uol/messages";
     if (isSending) {
-        const messageString = qs('input[name="message"]').value;
+        const messageString = qs('input[name="message"]');
         const user = loggedUser.name;
         const msgTo = receiver.name;
         const message = {
             from: user,
             to: msgTo,
-            text: messageString,
+            text: messageString.value,
             type: "message" // ou "private_message" para o bônus
         }
         const promise = sendMessage(messageAPI, message);
@@ -163,11 +162,23 @@ function messageHandler(isSending) {
         sendingEle.classList.add('active');
         promise.then(sentSuccesful(sendingEle));
         promise.catch(sentFailure);
-        setTimeout(() => sendingEle.classList.remove('active'), 4000)
-        return
+        setTimeout(() => sendingEle.classList.remove('active'), 4000);
+        messageString.value = "";
+        return;
     }
     return messageAPI;
 }
+
+function hamburgerHandler(e){
+    const hamburgerMenu = qs('.hamburguer-container');
+    if (e){
+        hamburgerMenu.classList.remove("active");
+    }else{
+        hamburgerMenu.classList.add("active");
+    }  
+}
+
+qs('.hamburguer-container').addEventListener("click", hamburgerHandler);
 
 const loggedUser = {
     name: ""

@@ -1,3 +1,5 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 button,
 input[type="submit"],
 input[type="reset"],
@@ -9,6 +11,14 @@ input[name="message"] {
     font: inherit;
     cursor: pointer;
     outline: inherit;
+}
+
+strong {
+    font-weight: bold;
+}
+
+body{
+    font-family: 'Roboto', sans-serif;
 }
 
 .container {
@@ -24,15 +34,56 @@ ion-icon {
 }
 
 /* HAMBURGER MENU STYLE */
-.hamburguer-menu {
+.hamburguer-container {
     height: 0;
     overflow: hidden;
     opacity: 0;
     position: absolute;
     top: 0;
     right: 0px;
-    transform: translateX();
+    background-color: rgba(0, 0, 0, 0.5);
+    transition-property: opacity, transform;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in;
+    transform: translateX(150%);
 }
+
+.hamburguer-container.active{
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    justify-content: end;
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 2;
+}
+
+.hamburguer-menu{
+    display: flex;
+    width:259px;
+    height: 100%;
+    position: relative;
+    flex-direction: column;
+    background-color: white;
+}
+
+.option-section{
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    font-weight: bold;
+    font-size: 16px;
+    height: 84px;
+}
+
+.option-section span{
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
 
 
 /* LOGIN STYLE */
@@ -109,6 +160,9 @@ header {
     align-items: center;
     margin: 0 22px;
 }
+.top-container ion-icon {
+    font-size: 42px;
+}
 
 /* SEND MESSAGE STYLE */
 .text-container {
@@ -139,7 +193,7 @@ header {
 }
 
 input[name="message"] {
-    width: 90%;
+    width: 100%;
 }
 
 input[name="message"],
@@ -166,6 +220,7 @@ input[name="message"]::placeholder {
     overflow-y: scroll;
     overflow-x: hidden;
     margin: 106px 0;
+    background-color: #E5E5E5;
 }
 
 .chat-container ul li {
@@ -178,6 +233,15 @@ input[name="message"]::placeholder {
 }
 .message-container {
     margin: 0 8px;
+}
+
+.time{
+    color:#AAAAAA;
+}
+
+li.normal{
+    width: 100%;
+    background-color: white;
 }
 
 li.status {

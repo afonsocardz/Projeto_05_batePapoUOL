@@ -24,37 +24,39 @@
                 </div>
             </div>
         </div>
-        <div class="hamburguer-menu">
-            <div class="option-section">
-                <span>Escolha um contato para enviar mensagem:</span>
+        <div class="hamburguer-container">
+            <div class="hamburguer-menu">
+                <div class="option-section">
+                    <span>Escolha um contato para enviar mensagem:</span>
+                </div>
+                <ul class="users">
+                    <li onclick="sendTo()">
+                        <ion-icon name="heart"></ion-icon>
+                        <span>Todos</span>
+                        <ion-icon name="heart"></ion-icon>
+                    </li>
+                </ul>
+                <div class="option-section">
+                    <span>Escolha a visibilidade:</span>
+                </div>
+                <ul class="visibility">
+                    <li>
+                        <ion-icon name="heart"></ion-icon>
+                        <span>Público</span>
+                        <ion-icon name="heart"></ion-icon>
+                    </li>
+                </ul>
             </div>
-            <ul class="users">
-                <li onclick="sendTo()">
-                    <ion-icon name="heart"></ion-icon>
-                    <span>Todos</span>
-                    <ion-icon name="heart"></ion-icon>
-                </li>
-            </ul>
-            <div class="option-section">
-                <span>Escolha a visibilidade:</span>
-            </div>
-            <ul class="visibility">
-                <li>
-                    <ion-icon name="heart"></ion-icon>
-                    <span>Público</span>
-                    <ion-icon name="heart"></ion-icon>
-                </li>
-            </ul>
         </div>
         <header>
             <div class="top-container">
                 <img src="./assets/imgs/logo1.svg" alt="Logo">
-                <ion-icon name="heart"></ion-icon>
+                <ion-icon onclick="hamburgerHandler()" name="people"></ion-icon>
             </div>
         </header>
         <div class="chat-container">
             <ul>
-                
+
             </ul>
         </div>
         <div class="text-container">
@@ -64,7 +66,7 @@
                     <span>Enviando mensagem para Todos</span>
                 </div>
                 <div class="send-button" onclick="messageHandler(true)">
-                    <ion-icon name="heart"></ion-icon>
+                    <ion-icon name="paper-plane-outline"></ion-icon>
                 </div>
             </div>
         </div>
